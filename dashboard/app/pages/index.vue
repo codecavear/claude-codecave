@@ -67,6 +67,26 @@ async function selectComponent(component: Component) {
   }
 }
 
+const isSaving = ref(false)
+const toast = useToast()
+
+async function saveComponent() {
+  if (!selectedComponent.value) return
+  isSaving.value = true
+  try {
+    await $fetch(`/api/component/${selectedComponent.value.path}`, {
+      method: 'PUT',
+      body: { content: componentContent.value }
+    })
+    toast.add({ title: 'Saved!', description: `${selectedComponent.value.name} updated successfully`, color: 'success' })
+    isEditing.value = false
+  } catch (e) {
+    toast.add({ title: 'Error', description: 'Failed to save changes', color: 'error' })
+  } finally {
+    isSaving.value = false
+  }
+}
+
 function closePanel() {
   isPanelOpen.value = false
   selectedComponent.value = null
@@ -345,7 +365,7 @@ onMounted(() => {
           <UButton color="neutral" variant="outline" @click="isEditing = false">
             Cancel
           </UButton>
-          <UButton color="primary">
+          <UButton color="primary" :loading="isSaving" @click="saveComponent">
             Save Changes
           </UButton>
         </div>
