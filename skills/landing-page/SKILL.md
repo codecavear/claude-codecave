@@ -5,9 +5,10 @@
 - "build landing"
 - "new landing page"
 - "add hero section"
-- "create pricing page"
-- "add testimonials"
 - "build features section"
+- "add benefits section"
+- "add testimonials"
+- "add CTA section"
 
 ## Overview
 
@@ -15,18 +16,25 @@ This skill provides patterns for building high-converting SaaS landing pages usi
 
 ## Landing Page Anatomy
 
-A complete landing page follows this flow:
+A complete landing page follows this flow (prioritized):
 
 ```
+Essential:
 1. Hero          → Capture attention, primary CTA
-2. Social Proof  → Logos, trust badges
-3. Features      → Core value proposition
-4. Benefits      → How it helps (with visuals)
-5. Testimonials  → Customer validation
-6. Pricing       → Clear options
+2. Features      → Core value proposition (MOST IMPORTANT)
+3. Benefits      → How it helps (with visuals)
+4. Final CTA     → Convert visitors
+
+Recommended:
+5. Social Proof  → Logos, trust badges
+6. Testimonials  → Customer validation
 7. FAQ           → Address objections
-8. Final CTA     → Convert visitors
+
+Optional:
+8. Pricing       → Clear options (often on separate /pricing page)
 ```
+
+**Focus on Features & Benefits** - These are what convince users. Pricing can live on a dedicated page.
 
 ---
 

@@ -31,7 +31,7 @@ Then enable the plugin in Claude Code settings.
 | Skill | Triggers |
 |-------|----------|
 | `nuxt-ui-patterns` | "build form", "create modal", "add table" |
-| `landing-page` | "create landing page", "add hero", "pricing section" |
+| `landing-page` | "create landing page", "add hero", "features section" |
 | `drizzle-postgres` | "create table", "add column", "write query" |
 | `nitro-testing` | "write tests", "test API" |
 | `threejs-development` | "create scene", "add 3D", "build game" |
