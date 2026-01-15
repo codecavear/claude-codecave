@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+body {
+  @apply bg-neutral-950;
+}
+
+#__nuxt {
+  min-height: 100vh;
+}

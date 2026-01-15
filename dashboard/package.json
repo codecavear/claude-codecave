@@ -1,0 +1,25 @@
+{
+  "name": "codecave-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate-data": "bun run scripts/generate-data.ts",
+    "dev": "bun run generate-data && nuxt dev",
+    "build": "bun run generate-data && nuxt build",
+    "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/three": "^0.182.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.3.0",
+    "nuxt": "^4.2.2",
+    "three": "^0.182.0"
+  }
+}
