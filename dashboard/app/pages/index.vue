@@ -328,12 +328,13 @@ onMounted(() => {
             <pre class="whitespace-pre-wrap text-sm text-neutral-300 font-mono bg-neutral-900 rounded-lg p-4">{{ componentContent }}</pre>
           </div>
 
-          <div v-else class="space-y-4">
+          <div v-else>
             <UTextarea
               v-model="componentContent"
               :rows="30"
               variant="outline"
-              class="font-mono text-sm"
+              class="font-mono text-sm w-full"
+              autoresize
             />
           </div>
         </div>
