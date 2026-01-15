@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "nuxt-remote": {
+      "type": "http",
+      "url": "https://mcp.nuxt.com"
+    },
+    "nuxt-ui-remote": {
+      "type": "http",
+      "url": "https://mcp.ui.nuxt.com"
+    },
+    "nano-banan-pro": {
+      "type": "http",
+      "url": "https://api.nanobanan.pro/mcp",
+      "headers": {
+        "Authorization": "Bearer ${NANO_BANAN_PRO_KEY}"
+      }
+    },
+    "threejs": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "three-js-mcp"],
+      "comment": "Three.js scene manipulation - requires WebSocket client on port 8082"
+    }
+  }
+}

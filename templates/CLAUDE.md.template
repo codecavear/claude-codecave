@@ -1,0 +1,53 @@
+# {PROJECT_NAME}
+
+## Stack
+- Nuxt 4 with app/ directory structure
+- Drizzle ORM with PostgreSQL
+- Nuxt UI 4 for components
+- nuxt-auth-utils for authentication (Google OAuth)
+- Bun as package manager
+
+## Agents
+When working on frontend (Vue components, pages, layouts), use the `nuxt-ui-builder` agent.
+When working on database schema or queries, use the `drizzle-postgres-expert` agent.
+When writing tests, use the `drizzle-nitro-test-writer` agent.
+When creating API endpoints, use the `nitro-api-builder` agent.
+
+## Key Patterns
+
+### Server Imports
+In server-side code (`server/`), use relative imports:
+```ts
+import { db } from '../../utils/db'
+import { users } from '../../database/schema'
+```
+
+### Database
+- Schema in `server/database/schema.ts`
+- DB client in `server/utils/drizzle.ts`
+- All tables use `{prefix}_` prefix (e.g., `{prefix}_users`)
+
+### API Structure
+- `server/api/` - REST endpoints
+- `server/routes/` - OAuth routes
+- `server/utils/` - Shared utilities
+
+### Commands
+```bash
+bun run dev          # Start dev server
+bun run build        # Production build
+bun run db:generate  # Generate migrations
+bun run db:migrate   # Run migrations
+bun run db:push      # Push schema (dev)
+bun run db:studio    # Drizzle Studio
+bun run lint         # ESLint
+bun run typecheck    # TypeScript check
+```
+
+## Environment Variables
+```
+DATABASE_URL=postgresql://...
+NUXT_SESSION_PASSWORD=your-32-char-secret
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+```

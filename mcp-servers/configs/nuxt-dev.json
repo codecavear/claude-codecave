@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "nuxt-remote": {
+      "type": "http",
+      "url": "https://mcp.nuxt.com"
+    },
+    "nuxt-ui-remote": {
+      "type": "http",
+      "url": "https://mcp.ui.nuxt.com"
+    }
+  }
+}
