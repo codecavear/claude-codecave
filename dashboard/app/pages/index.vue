@@ -15,7 +15,20 @@ const selectedComponent = ref<Component | null>(null)
 const componentContent = ref<string>('')
 const isEditing = ref(false)
 const isPanelOpen = ref(false)
+const isListOpen = ref(false)
+const selectedType = ref<'agent' | 'skill' | 'command' | 'mcp' | null>(null)
 const canvasRef = ref<HTMLCanvasElement>()
+const nodeLabels = ref<{ name: string; x: number; y: number; type: string }[]>([])
+
+const filteredComponents = computed(() => {
+  if (!selectedType.value || !components.value) return []
+  return components.value.filter(c => c.type === selectedType.value)
+})
+
+function openTypeList(type: 'agent' | 'skill' | 'command' | 'mcp') {
+  selectedType.value = type
+  isListOpen.value = true
+}
 
 const typeColors = {
   agent: 0x3b82f6,    // blue
@@ -69,7 +82,8 @@ onMounted(() => {
   scene.background = new THREE.Color(0x0a0a0a)
 
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-  camera.position.z = 15
+  camera.position.y = 15
+  camera.lookAt(0, 0, 0)
 
   const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.value, antialias: true })
   renderer.setSize(window.innerWidth, window.innerHeight)
@@ -108,7 +122,7 @@ onMounted(() => {
       const angle = baseAngle + (i - (comps.length - 1) / 2) * (spread / Math.max(comps.length - 1, 1))
       const x = Math.cos(angle) * radius
       const z = Math.sin(angle) * radius
-      const y = (Math.random() - 0.5) * 2
+      const y = 0 // Flat on same plane for top view
 
       const material = new THREE.MeshBasicMaterial({ color: typeColors[type as keyof typeof typeColors] })
       const mesh = new THREE.Mesh(nodeGeometry, material)
@@ -131,6 +145,19 @@ onMounted(() => {
       scene.add(line)
     })
   })
+
+  // Function to update label positions
+  function updateLabels() {
+    const labels: { name: string; x: number; y: number; type: string }[] = []
+    nodes.forEach(({ mesh, component }) => {
+      const vector = mesh.position.clone()
+      vector.project(camera)
+      const x = (vector.x * 0.5 + 0.5) * window.innerWidth
+      const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight
+      labels.push({ name: component.name, x, y, type: component.type })
+    })
+    nodeLabels.value = labels
+  }
 
   // Raycaster for click detection
   const raycaster = new THREE.Raycaster()
@@ -158,12 +185,7 @@ onMounted(() => {
   function animate() {
     requestAnimationFrame(animate)
     controls.update()
-
-    // Rotate nodes slightly
-    nodes.forEach(({ mesh }) => {
-      mesh.rotation.y += 0.005
-    })
-
+    updateLabels()
     renderer.render(scene, camera)
   }
   animate()
@@ -195,20 +217,36 @@ onMounted(() => {
       <p class="text-neutral-400">Interactive Plugin Visualizer</p>
     </div>
 
-    <!-- Stats -->
+    <!-- Stats (clickable) -->
     <div class="absolute top-4 right-4 z-10 flex gap-2">
-      <UBadge color="info" variant="soft" size="lg" leading-icon="i-lucide-bot">
+      <UBadge color="info" variant="soft" size="lg" leading-icon="i-lucide-bot" class="cursor-pointer hover:opacity-80" @click="openTypeList('agent')">
         {{ stats.agents }} Agents
       </UBadge>
-      <UBadge color="success" variant="soft" size="lg" leading-icon="i-lucide-sparkles">
+      <UBadge color="success" variant="soft" size="lg" leading-icon="i-lucide-sparkles" class="cursor-pointer hover:opacity-80" @click="openTypeList('skill')">
         {{ stats.skills }} Skills
       </UBadge>
-      <UBadge color="warning" variant="soft" size="lg" leading-icon="i-lucide-terminal">
+      <UBadge color="warning" variant="soft" size="lg" leading-icon="i-lucide-terminal" class="cursor-pointer hover:opacity-80" @click="openTypeList('command')">
         {{ stats.commands }} Commands
       </UBadge>
-      <UBadge color="secondary" variant="soft" size="lg" leading-icon="i-lucide-server">
+      <UBadge color="secondary" variant="soft" size="lg" leading-icon="i-lucide-server" class="cursor-pointer hover:opacity-80" @click="openTypeList('mcp')">
         {{ stats.mcp }} MCP
       </UBadge>
+    </div>
+
+    <!-- Node Labels -->
+    <div
+      v-for="label in nodeLabels"
+      :key="label.name"
+      class="absolute z-5 text-xs font-medium pointer-events-none whitespace-nowrap"
+      :class="{
+        'text-blue-400': label.type === 'agent',
+        'text-green-400': label.type === 'skill',
+        'text-orange-400': label.type === 'command',
+        'text-purple-400': label.type === 'mcp'
+      }"
+      :style="{ left: `${label.x + 15}px`, top: `${label.y - 8}px` }"
+    >
+      {{ label.name }}
     </div>
 
     <!-- Legend -->
@@ -309,6 +347,41 @@ onMounted(() => {
           <UButton color="primary">
             Save Changes
           </UButton>
+        </div>
+      </template>
+    </USlideover>
+
+    <!-- Type List Panel -->
+    <USlideover
+      v-model:open="isListOpen"
+      side="right"
+      :ui="{ content: 'max-w-[500px]' }"
+    >
+      <template #header>
+        <div class="flex items-center gap-3">
+          <UBadge
+            v-if="selectedType"
+            :color="selectedType === 'agent' ? 'info' : selectedType === 'skill' ? 'success' : selectedType === 'command' ? 'warning' : 'secondary'"
+            variant="soft"
+            size="lg"
+          >
+            {{ typeLabels[selectedType] }}
+          </UBadge>
+          <span class="text-lg font-semibold">{{ filteredComponents.length }} items</span>
+        </div>
+      </template>
+
+      <template #body>
+        <div class="space-y-2">
+          <div
+            v-for="comp in filteredComponents"
+            :key="comp.id"
+            class="p-4 rounded-lg bg-neutral-900 hover:bg-neutral-800 cursor-pointer transition-colors"
+            @click="isListOpen = false; selectComponent(comp)"
+          >
+            <h3 class="font-medium text-white">{{ comp.name }}</h3>
+            <p class="text-sm text-neutral-400 mt-1">{{ comp.description }}</p>
+          </div>
         </div>
       </template>
     </USlideover>
