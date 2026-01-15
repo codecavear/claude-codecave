@@ -273,6 +273,27 @@ Common utilities:
 
 ---
 
+## Landing Page Components
+
+For landing pages, use these Nuxt UI Pro components:
+
+| Component | Purpose |
+|-----------|---------|
+| `UPageHero` | Hero section with title, description, CTAs |
+| `UPageSection` | Content sections with optional features list |
+| `UPageCTA` | Call-to-action blocks |
+| `UPageCard` | Feature/benefit cards |
+| `UPageGrid` | Responsive card grid |
+| `UPageFeature` | Showcase key features |
+| `UPageLogos` | Logo cloud for social proof |
+| `UPricingPlans` | Pricing tier container |
+| `UPricingPlan` | Individual pricing card |
+| `UPricingTable` | Feature comparison table |
+
+**Refer to the `landing-page` skill for complete section patterns and templates.**
+
+---
+
 ## Checklist
 
 Before writing code:

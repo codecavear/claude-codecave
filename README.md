@@ -31,6 +31,7 @@ Then enable the plugin in Claude Code settings.
 | Skill | Triggers |
 |-------|----------|
 | `nuxt-ui-patterns` | "build form", "create modal", "add table" |
+| `landing-page` | "create landing page", "add hero", "pricing section" |
 | `drizzle-postgres` | "create table", "add column", "write query" |
 | `nitro-testing` | "write tests", "test API" |
 | `threejs-development` | "create scene", "add 3D", "build game" |
@@ -40,6 +41,7 @@ Then enable the plugin in Claude Code settings.
 | Command | Description |
 |---------|-------------|
 | `/new-nuxt-project` | Scaffold new Nuxt 4 project with conventions |
+| `/new-landing-page` | Create landing page with sections and i18n |
 | `/new-api-endpoint` | Create API endpoint with validation |
 | `/new-drizzle-table` | Add database table with proper patterns |
 
